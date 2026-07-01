@@ -78,7 +78,7 @@ namespace MiMieSaver
         void RegisterModule<T>(T module) where T : class, IArchiveModule;
 
         /// <summary>
-        /// 按类型获取模块
+        /// 按类型直接获取模块
         /// </summary>
         T GetModule<T>() where T : class, IArchiveModule;
 

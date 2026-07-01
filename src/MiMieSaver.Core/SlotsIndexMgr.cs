@@ -11,8 +11,6 @@ namespace MiMieSaver
     /// </summary>
     public class SlotsIndexMgr : ISlotIndex
     {
-        #region 字段
-
         /// <summary>
         /// 槽位索引文件路径
         /// </summary>
@@ -22,10 +20,7 @@ namespace MiMieSaver
         /// 槽位索引数据
         /// </summary>
         private SlotsIndexData data;
-
-        #endregion
-
-        #region 属性
+    
 
         /// <summary>
         /// 当前槽位 ID
@@ -47,9 +42,6 @@ namespace MiMieSaver
         /// </summary>
         public int Count => data.slotList.Count;
 
-        #endregion
-
-        #region 构造
 
         /// <summary>
         /// 构造函数
@@ -61,8 +53,6 @@ namespace MiMieSaver
             Directory.CreateDirectory(rootPath);
             Load();
         }
-
-        #endregion
 
         #region 槽位 CRUD
 
@@ -144,10 +134,6 @@ namespace MiMieSaver
             }
         }
 
-        #endregion
-
-        #region 路径
-
         /// <summary>
         /// 获取指定的存档槽 dat 路径
         /// </summary>
@@ -159,10 +145,10 @@ namespace MiMieSaver
 
         #endregion
 
-        #region 孤立清理
+        #region 孤立文件清理
 
         /// <summary>
-        /// 清理孤立槽位 有索引无 dat
+        /// 清理孤立存档槽 有索引无 dat
         /// </summary>
         public void CleanupOrphanedSlots()
         {
@@ -187,7 +173,7 @@ namespace MiMieSaver
         }
 
         /// <summary>
-        /// 清理孤立文件 有 dat 无索引
+        /// 清理孤立存档文件 有 dat 无索引
         /// </summary>
         public void CleanupOrphanedFiles()
         {
@@ -207,27 +193,31 @@ namespace MiMieSaver
 
         #endregion
 
-        #region 持久化
+        #region 读写工具函数
 
         /// <summary>
         /// 从磁盘加载索引
         /// </summary>
         private void Load()
         {
+            // 如果文件存在，则读取文件内容
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
                 var loaded = JsonConvert.DeserializeObject<SlotsIndexData>(json);
                 data = loaded ?? new SlotsIndexData();
             }
+            // 如果文件不存在，则创建新的槽位索引数据
             else
             {
                 data = new SlotsIndexData();
             }
 
+            // 如果槽位列表为空，则创建新的槽位列表
             if (data.slotList == null)
                 data.slotList = new List<SlotData>();
 
+            // 清理孤立存档槽
             CleanupOrphanedSlots();
         }
 
