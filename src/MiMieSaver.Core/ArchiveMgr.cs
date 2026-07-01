@@ -11,7 +11,6 @@ namespace MiMieSaver
     /// </summary>
     public class ArchiveMgr : IArchiveMgr
     {
-        #region 字段
 
         /// <summary>
         /// 存档根路径
@@ -33,9 +32,7 @@ namespace MiMieSaver
         /// </summary>
         private readonly Dictionary<Type, IArchiveModule> modulesByTypeDict = new Dictionary<Type, IArchiveModule>();
 
-        #endregion
 
-        #region 属性与构造
 
         /// <summary>
         /// 存档根路径
@@ -57,8 +54,6 @@ namespace MiMieSaver
             Directory.CreateDirectory(rootPath);
             slotIndex = new SlotsIndexMgr(rootPath);
         }
-
-        #endregion
 
         #region 存档槽操作
 
@@ -99,7 +94,7 @@ namespace MiMieSaver
 
         #endregion
 
-        #region 存档读写
+        #region 对外接口
 
         /// <summary>
         /// 获取当前存档数据
@@ -112,6 +107,7 @@ namespace MiMieSaver
             string path = slotIndex.GetSlotPath(slot.SlotId);
             if (!File.Exists(path)) return null;
 
+            // 通过字节流的方式读取存档数据
             using var stream = File.OpenRead(path);
             return SaveData.Parser.ParseFrom(stream);
         }
@@ -121,28 +117,36 @@ namespace MiMieSaver
         /// </summary>
         public void Save()
         {
+            // 获取当前激活槽位
             var slot = slotIndex.CurrentSlot;
             if (slot is null) return;
 
             SaveData saveData;
             try
             {
-                saveData = GetArchive() ?? new SaveData();
+                // 获取当前活跃的存档数据
+                saveData = GetArchive();
             }
             catch
             {
+                // 如果获取当前数据失败，则创建新的存档数据
                 saveData = new SaveData();
             }
 
+            // 设置存档元信息 这部分是protobuf所需
             saveData.Meta ??= new MetaSave();
             saveData.Meta.LastSaveTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
+            // 遍历所有模块 写入存档数据 这里是存档系统的核心
+            // 开发者实现接口 注册并且存入moduleOrderList后 这里会自动调用开发者实现的ToArchive方法
             foreach (var module in moduleOrderList)
                 module.ToArchive(saveData);
 
+            // 将存档数据写入文件
             string path = slotIndex.GetSlotPath(slot.SlotId);
             File.WriteAllBytes(path, saveData.ToByteArray());
 
+            // 更新存档槽最后保存时间
             slotIndex.UpdateLastSaveTime(slot.SlotId);
         }
 
@@ -173,8 +177,6 @@ namespace MiMieSaver
             if (slot == null) return false;
             return File.Exists(slotIndex.GetSlotPath(slot.SlotId));
         }
-
-        #endregion
 
         #region 模块注册
 
@@ -252,6 +254,8 @@ namespace MiMieSaver
         /// 获取所有模块
         /// </summary>
         public IReadOnlyList<IArchiveModule> GetModules() => moduleOrderList;
+
+        #endregion
 
         #endregion
     }
