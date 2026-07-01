@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MiMieSaver.Core/MiMieSaver.Core.csproj" />
+    <Project Path="src/MiMieSaver.Schema/MiMieSaver.Schema.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MiMieSaver.Tests/MiMieSaver.Tests.csproj" />
+  </Folder>
+</Solution>
