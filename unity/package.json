@@ -1,6 +1,6 @@
 {
   "name": "com.hakisheep.mm-saver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Mm Saver",
   "description": "Archive save system with slot index and Protobuf SaveData",
   "unity": "2021.3",

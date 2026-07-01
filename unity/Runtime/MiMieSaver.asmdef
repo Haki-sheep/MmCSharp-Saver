@@ -1,7 +1,9 @@
 {
     "name": "MiMieSaver",
     "rootNamespace": "MiMieSaver",
-    "references": [],
+    "references": [
+        "Newtonsoft.Json"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -12,5 +14,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }
