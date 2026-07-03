@@ -17,7 +17,7 @@ unity/                 Unity Package Manager 子目录
 在 `Packages/manifest.json` 添加
 
 ```json
-"com.hakisheep.mm-saver": "git@github.com:Haki-sheep/Mm-Saver.git?path=unity"
+"com.hakisheep.mm-saver": "git@github.com:Haki-sheep/MmCSharp-Saver.git?path=unity"
 ```
 
 `unity/` 目录下所有资源必须提交对应 `.meta` 文件 否则 UPM 导入后会报 immutable folder ignored
