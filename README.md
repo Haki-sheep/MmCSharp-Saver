@@ -20,6 +20,16 @@ unity/                 Unity Package Manager 子目录
 "com.hakisheep.mm-saver": "git@github.com:Haki-sheep/Mm-Saver.git?path=unity"
 ```
 
+`unity/` 目录下所有资源必须提交对应 `.meta` 文件 否则 UPM 导入后会报 immutable folder ignored
+
+Protobuf 与 Newtonsoft 依赖使用宿主项目 Plugins 中的 DLL
+
+`MiMieSaver.asmdef` 通过 `precompiledReferences` 引用 `Google.Protobuf.dll` 与 `Newtonsoft.Json.dll`
+
+宿主项目需具备其一
+
+- `Assets/.../Plugins/Protobuf/Google.Protobuf.dll`
+- 官方 `com.unity.nuget.newtonsoft-json`
 或在 MieMie 模块中枢里对「存档系统」点 **导入**
 
 HTTPS 备选

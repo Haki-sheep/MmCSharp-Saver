@@ -1,15 +1,14 @@
 {
     "name": "MiMieSaver",
     "rootNamespace": "MiMieSaver",
-    "references": [
-        "Newtonsoft.Json"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Google.Protobuf.dll"
+        "Google.Protobuf.dll",
+        "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
